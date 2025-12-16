@@ -95,6 +95,7 @@ function BookScreen() {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
+    sessionStorage.removeItem('token')
     delete axios.defaults.headers.common['Authorization']
     navigate('/login')
   }

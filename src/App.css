@@ -40,3 +40,24 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Login screen styles */
+.login-wrapper {
+  min-height: calc(100vh - 4rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  box-shadow: 0 6px 20px rgba(23, 36, 50, 0.08);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.login-card .ant-form-item {
+  margin-bottom: 12px;
+}

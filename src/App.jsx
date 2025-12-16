@@ -6,7 +6,7 @@ import BookScreen from './BookScreen';
 import LoginScreen from './LginScreen';
 
 function RequireAuth({ children }) {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token')
   if (!token) return <Navigate to="/login" replace />
   return children
 }
@@ -15,15 +15,21 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token')
     if (token) {
       axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
       setIsAuthenticated(true)
     }
   }, [])
 
-  const handleLoginSuccess = (token) => {
-    localStorage.setItem('token', token)
+  const handleLoginSuccess = (token, remember = false) => {
+    if (remember) {
+      localStorage.setItem('token', token)
+      sessionStorage.removeItem('token')
+    } else {
+      sessionStorage.setItem('token', token)
+      localStorage.removeItem('token')
+    }
     axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
     setIsAuthenticated(true)
   }
