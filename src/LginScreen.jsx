@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, Form, Input, Alert } from 'antd';
 import axios from 'axios'
 
@@ -8,6 +9,7 @@ export default function LoginScreen(props) {
 
   const [isLoading, setIsLoading] = useState(false)
   const [errMsg, setErrMsg] = useState(null)
+  const navigate = useNavigate();
 
   const handleLogin = async (formData) => {
     try {
@@ -17,6 +19,7 @@ export default function LoginScreen(props) {
       const token = response.data.access_token
       axios.defaults.headers.common = { 'Authorization': `bearer ${token}` }
       props.onLoginSuccess(token);
+      navigate('/')
     } catch (err) {
       console.log(err)
       setErrMsg(err.message)

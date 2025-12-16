@@ -1,16 +1,17 @@
 import './App.css'
 import { useState, useEffect } from 'react';
-import { Divider, Spin } from 'antd';
+import { Divider, Spin, Button } from 'antd';
 import BookList from './components/BookList';
 import AddBook from './components/AddBook';
 import EditBook from './components/EditBook';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
-axios.defaults.baseURL = "http://localhost:3000"
 const URL_BOOK = "/api/book"
 const URL_CATEGORY = "/api/book-category" 
 
 function BookScreen() {
+  const navigate = useNavigate()
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(false)
   const [bookData, setBookData] = useState([])
@@ -90,16 +91,23 @@ function BookScreen() {
 
   const handleCancelEdit = () => {
     setSelectedBook(null); 
-};
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    delete axios.defaults.headers.common['Authorization']
+    navigate('/login')
+  }
   
   return (
   <>
-  <div style={{ display: "flex", justifyContent: "center", marginBottom: "2em" }}>
+  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2em" }}>
     <AddBook 
-    onBookAdded={handleAddBook}
-    categories={categories} 
+      onBookAdded={handleAddBook}
+      categories={categories} 
     />
-    </div>
+    <Button onClick={handleLogout}>Logout</Button>
+  </div>
     <Divider>
       My books worth {totalAmount.toLocaleString()} dollars
     </Divider>
